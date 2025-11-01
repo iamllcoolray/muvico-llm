@@ -17,7 +17,7 @@ python src/muvico.py
 #### Fine Tuning
 
 ```
-python llm.py
+python src/llm.py
 ```
 
 ## Model
