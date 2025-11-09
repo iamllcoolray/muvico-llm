@@ -7,7 +7,7 @@ import sys
 MODEL_PATH = "./movie-recommender-model"  # Update this to your model path
 
 print("="*70)
-print("🎬 MOVIE RECOMMENDER - Interactive CLI")
+print("🎬 Muvico - Interactive CLI")
 print("="*70)
 
 # ============================================================================
@@ -126,7 +126,7 @@ def chat_loop(model, tokenizer):
     max_tokens = 300
     
     print("\n" + "="*70)
-    print("💬 Chat with the Movie Recommender!")
+    print("💬 Chat with the Muvico!")
     print("="*70)
     print_help()
     
@@ -146,7 +146,7 @@ def chat_loop(model, tokenizer):
                 command = user_input.lower()
                 
                 if command == '/quit' or command == '/exit' or command == '/q':
-                    print("\n👋 Thanks for using Movie Recommender! Goodbye!")
+                    print("\n👋 Thanks for using Muvico! Goodbye!")
                     break
                 
                 elif command == '/help' or command == '/h':
@@ -156,7 +156,7 @@ def chat_loop(model, tokenizer):
                 elif command == '/clear' or command == '/cls':
                     clear_screen()
                     print("="*70)
-                    print("🎬 MOVIE RECOMMENDER - Interactive CLI")
+                    print("🎬 Muvico - Interactive CLI")
                     print("="*70)
                     continue
                 
