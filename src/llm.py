@@ -111,7 +111,7 @@ def load_data():
         os.path.join(DATA_DIR, 'movies.dat'),
         sep='::',
         engine='python',
-        names=['movieId', 'title', 'genres'],
+        names=['movieId', 'title', 'genres', 'mpaa_rating'],
         encoding='latin-1'
     )
     
@@ -180,21 +180,52 @@ def create_training_examples(ratings_df, movies_df, num_samples=5000):
             # Create response
             response = "Based on your preferences, here are my recommendations:\n\n"
             
+            # for idx, (_, movie) in enumerate(rec_movies.iterrows(), 1):
+            #     title = movie['title']
+            #     genres = movie['genres'].replace('|', ', ')
+                
+            #     # Find common genres
+            #     genre_list = set(movie['genres'].split('|'))
+            #     context_genres = set('|'.join(context_movies['genres']).split('|'))
+            #     common_genres = genre_list & context_genres
+                
+            #     if common_genres:
+            #         reason = f"shares your love of {', '.join(list(common_genres)[:2])}"
+            #     else:
+            #         reason = f"is a great {genres} film"
+                
+            #     response += f"{idx}. **{title}** - This {reason} and matches your taste.\n\n"
+            
             for idx, (_, movie) in enumerate(rec_movies.iterrows(), 1):
                 title = movie['title']
                 genres = movie['genres'].replace('|', ', ')
+                mpaa = movie['mpaa_rating']
                 
                 # Find common genres
                 genre_list = set(movie['genres'].split('|'))
                 context_genres = set('|'.join(context_movies['genres']).split('|'))
                 common_genres = genre_list & context_genres
                 
-                if common_genres:
-                    reason = f"shares your love of {', '.join(list(common_genres)[:2])}"
-                else:
-                    reason = f"is a great {genres} film"
+                # Check common MPAA ratings
+                context_mpaa = set(context_movies['mpaa_rating'].dropna())
+                has_common_rating = mpaa in context_mpaa and mpaa != 'N/A'
                 
-                response += f"{idx}. **{title}** - This {reason} and matches your taste.\n\n"
+                # Build reason
+                reasons = []
+                if common_genres:
+                    reasons.append(f"shares your love of {', '.join(list(common_genres)[:2])}")
+                else:
+                    reasons.append(f"is a great {genres} film")
+                
+                if has_common_rating:
+                    reasons.append(f"matches your {mpaa}-rated preferences")
+                
+                reason = " and ".join(reasons)
+                
+                # Add MPAA rating
+                rating_text = f" (Rated {mpaa})" if mpaa and mpaa != 'N/A' else ""
+                
+                response += f"{idx}. **{title}**{rating_text} - This {reason} and matches your taste.\n\n"
             
             # Format for training
             training_text = f"<|user|>\n{prompt}\n<|assistant|>\n{response}<|endoftext|>"

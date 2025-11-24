@@ -1,6 +1,6 @@
 {
   "model_name": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
-  "trained_date": "2025-10-22T23:24:23.246261",
+  "trained_date": "2025-11-24T10:14:42.988598",
   "epochs": 3,
   "samples": 5000,
   "batch_size": 4,
